@@ -1,6 +1,8 @@
-# Haxe Heaps.io Prefab System Design Document
+# Heaps Prefab System
 
 This document outlines a system for portable prefabs in Heaps.io. I'm focusing on 2D for now since I have never actually used h3d, but the setup should extend to 3D without any difference. 
+
+This is heavily inspired by [nayata's prefab system](https://github.com/nayata/prefab), which works great but still needs resources and scripts to be manually included in the base heaps projects. I will probably use an extended version of his prefab json schema. 
 
 ## What "Portable" Means
 By "portable," I mean getting a prefab up and running should ideally take just two steps:
