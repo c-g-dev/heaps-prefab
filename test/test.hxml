@@ -1,0 +1,10 @@
+-cp src
+-cp ../src
+
+--macro heaps.prefab.Loader.init()
+
+-lib heaps
+-lib zip
+
+-hl build.hl
+--main Main

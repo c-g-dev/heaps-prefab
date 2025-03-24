@@ -4,6 +4,9 @@ This document outlines a system for portable prefabs in Heaps.io. I'm focusing o
 
 This is heavily inspired by [nayata's prefab system](https://github.com/nayata/prefab), which works great but still needs resources and scripts to be manually included in the base heaps projects. I will probably use an extended version of his prefab json schema. 
 
+## Current Status
+All the macro stuff is implemented and working! Now to just actually create real Heaps objects from the prefab configs.
+
 ## What "Portable" Means
 By "portable," I mean getting a prefab up and running should ideally take just two steps:
 1. Drop the prefab into the `/res` folder.

@@ -1,0 +1,6 @@
+-cp src
+
+-lib heaps
+-lib zip
+
+-hl build.hl
