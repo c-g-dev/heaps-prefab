@@ -5,7 +5,13 @@ This document outlines a system for portable prefabs in Heaps.io. I'm focusing o
 This is heavily inspired by [nayata's prefab system](https://github.com/nayata/prefab), which works great but still needs resources and scripts to be manually included in the base heaps projects. I will probably use an extended version of his prefab json schema. 
 
 ## Current Status
-All the macro stuff is implemented and working! Now to just actually create real Heaps objects from the prefab configs.
+Almost completely functional. All macro stuff working. Local resources and classpath injection working great. Does render completely to Heaps objects.  Very close to total victory.
+
+The only pending issue is there there are some hiccups on nested prefabs. There isn't a great way to differentiate between THIS prefab and a prefab being used as a resource (it's important because resource prefabs need to be unpacked). The JSON will need to get changed to explicitly detail when a prefab is root and when it is referenced.
+
+This is part of a bigger nuisence that currently the prefab.json "type" field is going to be the actual fully qualified type (i.e. "h2d.Object"). I will need to change my HEXE fork to output types like that. 
+
+Otherwise complete perfection. Worked way better and easier than I thought it would. Public release very soon.
 
 ## What "Portable" Means
 By "portable," I mean getting a prefab up and running should ideally take just two steps:

@@ -107,7 +107,6 @@ class PrefabsMacro {
                             pos: pos
                         };
 
-                        // .createConstructor()
                         var callExpr = {
                             expr: ECall(
                                 {expr: EField(getBuilderExpr, "createConstructor"), pos: pos},
@@ -116,7 +115,6 @@ class PrefabsMacro {
                             pos: pos
                         };
 
-                        // Define the field
                         var field: Field = {
                             name: subfolder,
                             access: [APublic, AStatic],
