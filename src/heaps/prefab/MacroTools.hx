@@ -1,10 +1,13 @@
 package heaps.prefab;
 
-class MacroTools {
-    public static function getTempFolder():String {
+class MacroTools
+{
+    public static function getTempFolder() : String
+    {
         #if sys
             var os = Sys.systemName();
-            return switch(os.toLowerCase()) {
+            return switch (os.toLowerCase())
+            {
                 case "windows":
                     Sys.getEnv("TEMP") != null ? Sys.getEnv("TEMP") : Sys.getEnv("TMP");
                 case "mac":
@@ -19,12 +22,13 @@ class MacroTools {
         #end
     }
     
-    public static function getPrefabDir():String {
+    public static function getPrefabDir() : String
+    {
         #if prefab_dir
             return haxe.macro.Context.definedValue("prefab_dir");
         #else
         var projectName = Loader.CURRENT_PROJECT_NAME;
-        if( projectName == null ) projectName = "default";
+        if (projectName == null) projectName = "default";
         return getTempFolder() + "/heapsprefab/" + projectName + "/";
         #end
     }

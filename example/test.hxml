@@ -1,0 +1,10 @@
+-cp src
+-cp ../src
+
+-lib heaps
+-lib hlsdl
+-lib zip
+
+
+-hl build.hl
+--main Main

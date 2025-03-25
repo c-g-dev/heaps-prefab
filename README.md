@@ -5,13 +5,7 @@ This document outlines a system for portable prefabs in Heaps.io. I'm focusing o
 This is heavily inspired by [nayata's prefab system](https://github.com/nayata/prefab), which works great but still needs resources and scripts to be manually included in the base heaps projects. I will probably use an extended version of his prefab json schema. 
 
 ## Current Status
-Almost completely functional. All macro stuff working. Local resources and classpath injection working great. Does render completely to Heaps objects.  Very close to total victory.
-
-The only pending issue is there there are some hiccups on nested prefabs. There isn't a great way to differentiate between THIS prefab and a prefab being used as a resource (it's important because resource prefabs need to be unpacked). The JSON will need to get changed to explicitly detail when a prefab is root and when it is referenced.
-
-This is part of a bigger nuisence that currently the prefab.json "type" field is going to be the actual fully qualified type (i.e. "h2d.Object"). I will need to change my HEXE fork to output types like that. 
-
-Otherwise complete perfection. Worked way better and easier than I thought it would. Public release very soon.
+Implementation complete. Prefabs work front-to-back, rendering in Heaps, with contained resources and behaviors. Definitely going to be edge cases that don't work, but basic functionality is fine. After a bit of cleanup this will be ready for public release.
 
 ## What "Portable" Means
 By "portable," I mean getting a prefab up and running should ideally take just two steps:
@@ -42,23 +36,3 @@ These renderers will be hooked up via macros to a "Prefab" object, so at runtime
 ```
 var myObject = Prefab.MyObject();
 ```
-
-
-## Open Questions
-
-### Handling Packages in `/src` Folders
-Ideally prefabs would be able to be developed as their own standalone projects, then zipped up into the prefab format with a utility tool. This raises some questions about dependencies and folder structure. We could either bundle all dependencies into `/src` or leave it to the end user to sort out.
-
-If `/src` has subfolders, like this:
-
-```
-/src
-  /dependencies
-  Main.hx
-```
-
-`Main.hx` sits at the base classpath and imports from `/dependencies`. But when the macro unzips this into `TEMP` and registers it under a new classpath (say, `heaps.prefabs.MyPrefab.Main` or `heaps.prefabs.MyPrefab.dependencies.DependencyExample`), things get tricky.
-
-Can Haxe even handle this cleanly? One idea is to tweak the files during the "copy to TEMP" step—rewrite packages and imports on the fly. But that could be infeasible. You would need to update not just package declarations and imports but also any inline qualified references, enums, etc. Not even sure if it's doable.
-
-The fallback would be enforcing a strict folder structure on prefab sources, like `heaps.prefabs.MyPrefab` for everything. Not really ideal.

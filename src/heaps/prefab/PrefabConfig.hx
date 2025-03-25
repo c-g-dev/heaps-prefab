@@ -1,9 +1,9 @@
 package heaps.prefab;
 
+typedef Field = { name : String, type:String, data:String, original:String, value:String };
 
-typedef Field = { name : String, type : String, data : String, original : String, value : String };
-
-typedef PrefabConfig = {
+typedef PrefabConfig =
+{
 	var name : String;
 	var type : String;
 	@:optional var link : String;
@@ -44,4 +44,6 @@ typedef PrefabConfig = {
 	@:optional var atlas : String;
 	@:optional var font : String;
 	@:optional var path : String;
+
+	@:optional var builderClass : String;
 }
