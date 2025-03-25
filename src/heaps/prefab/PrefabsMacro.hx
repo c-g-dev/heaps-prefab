@@ -8,6 +8,16 @@ import haxe.Json;
 
 class PrefabsMacro {
     #if macro
+
+    static function convertTypes(value: String): String {
+        switch(value) {
+            case "prefab": return "h2d.Object";
+            case "bitmap": return "h2d.Bitmap";
+            case "object": return "h2d.Object";
+            default : return value;
+        }
+    }
+
     static function build(): Array<Field> {
         
         var fields = Context.getBuildFields();
@@ -33,9 +43,16 @@ class PrefabsMacro {
                 case TObject:
                     var objFields = new Array<ObjectField>();
                     for (field in Reflect.fields(value)) {
-                        var fieldValue = Reflect.field(value, field);
-                        var fieldExpr = makeExpr(fieldValue, pos);
-                        objFields.push({field: field, expr: fieldExpr});
+                        if( field == "type" ) {
+                            var fieldValue = convertTypes(Reflect.field(value, field));
+                            var fieldExpr = makeExpr(fieldValue, pos);
+                            objFields.push({field: field, expr: fieldExpr});
+                        }
+                        else {
+                            var fieldValue = Reflect.field(value, field);
+                            var fieldExpr = makeExpr(fieldValue, pos);
+                            objFields.push({field: field, expr: fieldExpr});
+                        }
                     }
                     return {expr: EObjectDecl(objFields), pos: pos};
                 case TClass(String): return Context.makeExpr(value, pos);
@@ -66,7 +83,7 @@ class PrefabsMacro {
 
                     
                     if (Reflect.hasField(config, "type") && Std.is(config.type, String)) {
-                        var typeStr: String = config.type;
+                        var typeStr: String = convertTypes(config.type);
                         var typePath = parseTypePath(typeStr);
 
                         
@@ -75,23 +92,31 @@ class PrefabsMacro {
                         var pathExpr = Context.makeExpr(tempFolder + subfolder, pos);
 
                         var configExpr = makeExpr(config, pos);
+
+                        var typeExpr = Context.parse(typeStr, pos);
                         
-                        var newExpr = {
-                            expr: ENew(
-                                {name: "PrefabBuilder", pack: [], params: [TPType(TPath(typePath))]},
-                                [pathExpr, configExpr]
+                        var getBuilderExpr = {
+                            expr: ECall(
+                                {expr: EField({expr: EConst(CIdent("PrefabBuilders")), pos: pos}, "getBuilder"), pos: pos},
+                                [
+                                    typeExpr,
+                                    pathExpr,
+                                    configExpr
+                                ]
                             ),
                             pos: pos
                         };
 
+                        // .createConstructor()
                         var callExpr = {
                             expr: ECall(
-                                {expr: EField(newExpr, "createConstructor"), pos: pos},
+                                {expr: EField(getBuilderExpr, "createConstructor"), pos: pos},
                                 []
                             ),
                             pos: pos
                         };
-                        
+
+                        // Define the field
                         var field: Field = {
                             name: subfolder,
                             access: [APublic, AStatic],

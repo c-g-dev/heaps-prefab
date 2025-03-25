@@ -1,5 +1,6 @@
 package heaps.prefab;
 
+
 import haxe.io.Path;
 import hxd.res.Resource;
 import hxd.fs.LoadedBitmap;
@@ -10,54 +11,45 @@ import haxe.io.Bytes;
 import sys.FileSystem;
 
 class LocalRes {
+	#if !macro
 
-    public static macro function here(): ExprOf<LocalRes> {
+    static var cachedResources: Map<String, hxd.res.Resource> = [];
+
+
+    public static function tile(name:String): h2d.Tile {
+        return hxd.res.Any.fromBytes("", res(name).entry.getBytes()).toTile();
+	}
+
+    public static function sound(name:String): hxd.res.Sound {
+        return hxd.res.Any.fromBytes("", res(name).entry.getBytes()).toSound();
+	}
+
+	public static function res(name:String): hxd.res.Resource {
+        if(!cachedResources.exists(name)){
+            cachedResources[name] = new Resource(new ComponentEmbeddedFileEntry(name));
+        }
+		return cachedResources[name];
+	}
+	#end
+
+    public static macro function initEmbed() {
         trace(Path.directory(Context.getLocalModule().split(".").join("/") + ".hx"));
         var resPath = Context.resolvePath(Path.directory(Context.getLocalModule().split(".").join("/") + ".hx") + "/res");
+        trace("resPath: " + resPath);
         if (!FileSystem.isDirectory(resPath)) {
             Context.error("res directory not found", Context.currentPos());
             return macro null;
         }
-        return macro @:privateAccess new LocalRes(resPath);
-    }
-
-    #if !macro
-
-    static var cachedResources: Map<String, hxd.res.Resource> = [];
-
-    var prepend: String;
-
-    function new(prepend: String) {
-        this.prepend = prepend;
-    }
-
-    public static function scoped(path: String): LocalRes {
-        return new LocalRes(path + "/res");
-    }
-
-    function getResourceName( name : String ) : String {
-        return this.prepend + "/" + name;
-    }
-
-    public function tile(name:String): h2d.Tile {
-        return hxd.res.Any.fromBytes("", res(name).entry.getBytes()).toTile();
-	}
-
-    public function sound(name:String): hxd.res.Sound {
-        return hxd.res.Any.fromBytes("", res(name).entry.getBytes()).toSound();
-	}
-
-	public function res(name:String): hxd.res.Resource {
-        var qName = getResourceName(name);
-        if(!cachedResources.exists(qName)){
-            cachedResources[qName] = new Resource(new ComponentEmbeddedFileEntry(qName));
+        
+        var files = FileSystem.readDirectory(resPath);
+        for (file in files) {
+            var fullPath = resPath + "/" + file;
+            var name = "res/" + file;
+            Context.addResource(name, File.getBytes(fullPath));
         }
-		return cachedResources[qName];
-	}
-	#end
+        return macro null;
+    }
 }
-
-
 
 class ComponentEmbeddedFileEntry extends FileEntry {
 

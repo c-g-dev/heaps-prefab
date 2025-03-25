@@ -77,6 +77,7 @@ class Loader {
 
         
         var hasSrcFolder = false;
+        var hasResFolder = false;
 
         
         while ((entry = zip.getNextEntry()) != null) {
@@ -89,6 +90,10 @@ class Loader {
             }
 
             
+            if (fileName.startsWith("res/") || fileName == "res") {
+                hasResFolder = true;
+            }
+
             var dir = targetPath.substr(0, targetPath.lastIndexOf("/"));
             if (!FileSystem.exists(dir)) {
                 FileSystem.createDirectory(dir);
@@ -108,6 +113,19 @@ class Loader {
             var srcPath = tempFolder + "src";
             Compiler.addClassPath(srcPath);
             trace("Added classpath: " + srcPath);
+        }
+
+        trace("hasResFolder: " + hasResFolder);
+        if(hasResFolder) {
+            var resPath = tempFolder + "res";
+            var files = FileSystem.readDirectory(resPath);
+            for (file in files) {
+                var fullPath = resPath + "/" + file;
+                var name = "res/" + file;
+                trace("Adding resource: " + fullPath);
+                Context.addResource(fullPath, File.getBytes(fullPath));
+            }
+            trace("Added resource: " + resPath);
         }
     }
     #end

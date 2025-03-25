@@ -4,6 +4,7 @@
 --macro heaps.prefab.Loader.init()
 
 -lib heaps
+-lib hlsdl
 -lib zip
 
 -hl build.hl
