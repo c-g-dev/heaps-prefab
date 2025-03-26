@@ -2,5 +2,8 @@
 
 -lib heaps
 -lib zip
+-lib heaps-local-res
+
+--verbose
 
 -hl build.hl

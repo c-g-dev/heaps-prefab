@@ -48,7 +48,7 @@ class PrefabsMacro
                     for (field in Reflect.fields(value))
                     {
                         if (field == "type" ) {
-                            var fieldValue = convertTypes(Reflect.field(value, field));
+                            var fieldValue = Utils.convertTypes(Reflect.field(value, field));
                             var fieldExpr = makeExpr(fieldValue, pos);
                             objFields.push({ field: field, expr:fieldExpr });
                         }
@@ -89,7 +89,7 @@ class PrefabsMacro
                     var config : Dynamic = Json.parse(content);
                     
                     if (Reflect.hasField(config, "type") && Std.is(config.type, String)) {
-                        var typeStr : String = convertTypes(config.type);
+                        var typeStr : String = Utils.convertTypes(config.type);
                         var typePath = parseTypePath(typeStr);
                         
                         var fieldType = TFunction([], TPath(typePath));

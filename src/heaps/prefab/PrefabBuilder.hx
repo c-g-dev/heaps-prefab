@@ -1,5 +1,6 @@
 package heaps.prefab;
 
+import heaps.localres.LocalRes;
 import hxd.res.Resource;
 
 class PrefabBuilder<T>
@@ -17,25 +18,26 @@ class PrefabBuilder<T>
     {
         return () -> {
             if (config.link != null)
-            {
+            {   
                 var info = PrefabCache.get(config.link);
-                var builder = PrefabBuilders.resolveBuilder(info.path, info.config);
-                return cast builder.createConstructor()();
+                if(info != null) {
+                    var builder = PrefabBuilders.resolveBuilder(info.path, info.config);
+                    return cast builder.createConstructor()();
+                }
+                
             }
-            else
-            {
-                trace("root prefab");
-                var obj = createObjectInstance();
-                applyTransforms(cast obj);
-                attachChildren(cast obj);
-                return cast obj;
-            }
+            
+            var obj = createObjectInstance();
+            applyTransforms(cast obj);
+            attachChildren(cast obj);
+            return cast obj;
+        
         };
     }
 
     public function createObjectInstance() : T
     {
-        return Type.createInstance(Type.resolveClass(config.type), []);
+        return Type.createInstance(Type.resolveClass(Utils.convertTypes(config.type)), []);
     }
 
     public function getResource(resName:String) : hxd.res.Any
@@ -55,23 +57,12 @@ class PrefabBuilder<T>
         if (config.visible != null) obj.visible = config.visible;
     }
 
-    function convertTypes(value:String) : String
-    {
-        switch (value) {
-            case "prefab": return "h2d.Object";
-            case "bitmap": return "h2d.Bitmap";
-            case "object": return "h2d.Object";
-            default : return value;
-        }
-    }
 
     public function attachChildren(obj:h2d.Object)
     {
         if (config.children == null) return;
         for (eachChild in config.children)
         {
-            trace("render child: " + eachChild.name + " " + eachChild.type);
-            var realType = convertTypes(eachChild.type);
             var childPrefabBuilder = PrefabBuilders.resolveBuilder(path, eachChild);
             var child = childPrefabBuilder.createConstructor()();
             obj.addChild(child);

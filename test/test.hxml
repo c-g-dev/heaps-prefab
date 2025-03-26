@@ -5,6 +5,7 @@
 
 -lib heaps
 -lib hlsdl
+-lib heaps-local-res
 -lib zip
 
 -hl build.hl
