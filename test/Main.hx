@@ -6,7 +6,6 @@ class Main extends App
     override function init()
     {
         var z = Prefabs.alltypes();
-        z.alpha = 1;
         s2d.addChild(z);
     }
 

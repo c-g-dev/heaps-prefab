@@ -1,0 +1,20 @@
+{
+    "url" : "https://github.com/c-g-dev/heaps-prefab",
+    "description":  "Portable Heaps prefabs with bundled resources and scripts",
+    "dependencies":  {
+                         "heaps":  "",
+                         "heaps-local-res": "",
+                         "zip": ""
+                     },
+    "version":  "1.0.0",
+    "tags": [
+        "heaps"
+    ],
+    "classPath":  "src",
+    "name":  "heaps-prefab",
+    "contributors":  [
+                         "cgdev"
+                     ],
+    "releasenote":  "Initial release",
+    "license":  "MIT"
+}
