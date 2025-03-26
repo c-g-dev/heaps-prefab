@@ -7,7 +7,7 @@ Bundle full Heaps objects into reusable prefabs, including necessary resources a
 Installing:
 
 ```
-haxelib install heaps-prefabs
+haxelib install heaps-prefab
 ```
 
 Including in Heaps project:
@@ -17,7 +17,7 @@ Including in Heaps project:
 --macro heaps.prefab.Loader.init()
 
 //access prefab resources
-var z = Prefabs.MyCustomPrefab(); //asuming MyCustomPrefab.prefab is in your /res folder
+var z = Prefabs.MyCustomPrefab(); //assuming MyCustomPrefab.prefab is in your /res folder
 s2d.addChild(z);
 ```
 
