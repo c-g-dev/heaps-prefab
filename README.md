@@ -2,6 +2,8 @@
 
 Bundle full Heaps objects into reusable prefabs, including necessary resources and scripts. 
 
+Yes this allows you to bundle code as a resource without having to use something like hscript, and as far as I can tell, there are no restrictions. 
+
 ## Usage
 
 Installing:
