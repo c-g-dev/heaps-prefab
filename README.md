@@ -33,8 +33,5 @@ prefab.build(); //writes MyCustomBitmapPrefab.prefab ready to use
 
 This is heavily inspired by [nayata's prefab system](https://github.com/nayata/prefab), which works great but still needs resources and scripts to be manually included in the base heaps projects. This repo uses an extended version of his prefab json schema.
 
-## Prefab Implementation Rules (full guide in progress)
-
-1) Resources in Prefab code need to use LocalRes from heaps-local-res.
-
-Check /example for an example of creating a Prefab with logic. Check /test for an example of using that Prefab.
+- For further guidance check out the [Guide](https://github.com/c-g-dev/heaps-prefab/wiki/Guide).
+- I also have a [HEXE fork](https://github.com/c-g-dev/hexe-fork) which outputs prefabs for this system.
